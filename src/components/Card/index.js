@@ -8,7 +8,7 @@ function Card(props) {
   return (
     <div className="card">
       <div className="img-container">
-        <img alt={props.name} src={props.image} onClick={() => props.shuffleCard()} className="shuffle" />
+        <img alt={props.name} src={props.image} onClick={() => props.shuffleCard(props.id)} className="shuffle" />
       </div>
     </div>
   );

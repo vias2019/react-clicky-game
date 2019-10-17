@@ -12,21 +12,28 @@ class App extends Component {
   state = {
     cards,
     count: 0
+  
   };
 
 handleScore =() => {
   this.setState({count: this.state.count + 1});
+  if(this.state.count===8){
+      alert("You won!");
+    this.setState({count: 0});
+    window.location.reload(); 
+  }
 };
 
   render() {
     return (
       <Wrapper>
-      <Title>Clicky Game<br></br>Click on Image to begin!.....</Title>
+      <Title score={this.state.count}>Clicky Game<br></br>Click on Image to begin!.....</Title>
       {this.state.cards.map(card => (
         <Card
           id={card.id}
           name={card.name}
           image={card.image}
+          shuffleCard= {this.shuffleCard}
         />
       ))}
       </Wrapper>
@@ -55,16 +62,36 @@ handleScore =() => {
   };
 
 
-  shuffleCard = () => {
-   
-    if (this.props.clicked){
+  shuffleCard = (id) => {
+    var cardClickedOn=this.state.cards.filter((card)=> card.id===id);
+    console.log(id);
+    console.log(cardClickedOn);
+   cardClickedOn=cardClickedOn[0];
+    //if (this.props.clicked){
+    if (cardClickedOn.clicked){
       alert ("Game over");
+      this.setState({cards: cards, count: 0});
+      //cards.clicked=false
+     window.location.reload(); 
     }else {
-      this.props.clicked=true;
-      this.shuffle(this.cards);
+      this.state.cards.map (
+        (card)=> {
+          if (card.id===id){
+            cardClickedOn.clicked=true
+            return cardClickedOn
+          }else{
+            return card
+          }
+        }
+      )
+      this.shuffle(this.state.cards);
       this.handleScore();
     }
   };
+
+  handleClick =(id)=>{
+    this.shuffleCard(id);
+  }
 };
 export default App;
 
